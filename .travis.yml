@@ -1,0 +1,58 @@
+---
+  language: go
+  sudo: false
+  notifications:
+    email: true
+  go:
+    - stable
+    - tip
+  env:
+    global:
+      - GO15VENDOREXPERIMENT=1
+  matrix:
+    allow_failures:
+      - go: tip
+    fast_finish: true
+  install:
+    - go get github.com/golang/lint/golint
+    - go get honnef.co/go/tools/cmd/staticcheck
+  script:
+    - go build -v
+    - go vet $(go list ./... | grep -v vendor)
+    - staticcheck $(go list ./... | grep -v vendor)
+    - test -z "$(golint ./... | grep -v vendor | tee /dev/stderr)"
+    - test -z "$(gofmt -s -l . | grep -v vendor | tee /dev/stderr)"
+    - make release
+  deploy:
+    provider: releases
+    api_key:
+      secure: "AFv00hMoGdgE5YSsENhZQZeoFmJr1mMKn+zNrJvZSBol+EJ4aWRw6iTpqtwwabjCobvBKHmntTPtAVfv0UNHYNkgs3AYf407nwbvtP96TWluyNX6Vql6uuD34Kq4SxPBIt7nK9SqCMeC72fDK81EYILjQ5xERFhb2Bl1uIvMPzpEYO82XFI6ygSiQBGgLzqux5FseYQ/13rvbwS3ubv4QCGJ/c75e3m2ebSw53SPle45ZOhCtT1BoxapcX8y/yotf/rVdIWXj1dtDuxgyEP+xkFA2KjOgXpI4/c0LVqnz2r3wO+XEQscrnUzoDAJ+WU/OoiQjc3dgLa5L8eTxIQEySNjdu7mzp/En3cP1XEQDJLcdMO+ql8h12uXnaxiOEp0LKU7KNq+IB3I2eXLw1QBXklbBae453DzKm22qFUG9MdH724vrMREwHEVsnPlxCc3aBs8Q/G2klu5t6z3I3n3Pp9piBgNrLgaYUFwftjBLPWwK2niyUM71/PE4GMBbtMF+fPqRC3T0MNaO++zI9wIqEdvpHe7BxExUzc8R5AwMUHfxJr7MVWyhaW/n/BDNvvuATdD7p8caJloRg1i3APhvcNLQC3yZ0DothOInSLlB+6ABZQHvh0ksrh1rz5RtSucO5PMhJWTZSPnkWpusyFcJwxe87yXw6SAId9Jl5Hih6M="
+    file:
+      - dist/minio-telegram-bot-linux-amd64.md5
+      - dist/minio-telegram-bot-linux-arm
+      - dist/minio-telegram-bot-darwin-amd64.md5
+      - dist/minio-telegram-bot-darwin-amd64
+      - dist/minio-telegram-bot-linux-arm64.sha256
+      - dist/minio-telegram-bot-linux-arm.sha256
+      - dist/minio-telegram-bot-linux-386.sha256
+      - dist/minio-telegram-bot-darwin-386.md5
+      - dist/minio-telegram-bot-freebsd-amd64.md5
+      - dist/minio-telegram-bot-linux-arm64.md5
+      - dist/minio-telegram-bot-linux-arm64
+      - dist/minio-telegram-bot-freebsd-amd64.sha256
+      - dist/minio-telegram-bot-freebsd-386.md5
+      - dist/minio-telegram-bot-linux-amd64.sha256
+      - dist/minio-telegram-bot-linux-386.md5
+      - dist/minio-telegram-bot-freebsd-386
+      - dist/minio-telegram-bot-linux-arm.md5
+      - dist/minio-telegram-bot-darwin-386.sha256
+      - dist/minio-telegram-bot-darwin-amd64.sha256
+      - dist/minio-telegram-bot-darwin-386
+      - dist/minio-telegram-bot-linux-386
+      - dist/minio-telegram-bot-freebsd-amd64
+      - dist/minio-telegram-bot-freebsd-386.sha256
+      - dist/minio-telegram-bot-linux-amd64
+    skip_cleanup: true
+    on:
+      go: stable
+      tags: true
