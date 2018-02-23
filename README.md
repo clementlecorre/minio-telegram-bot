@@ -1,6 +1,6 @@
 # minio-telegram-bot
 
-[![Build Status](https://travis-ci.com/clementlecorre/minio-telegram-bot.svg?token=pQ5JuFHLtUEwNb123zaH&branch=master)](https://travis-ci.com/clementlecorre/minio-telegram-bot)
+[![Build Status](https://travis-ci.org/clementlecorre/minio-telegram-bot.svg&branch=master)](https://travis-ci.org/clementlecorre/minio-telegram-bot)
 [![](https://images.microbadger.com/badges/image/cl3m3nt/minio-telegram-bot.svg)](https://microbadger.com/images/cl3m3nt/minio-telegram-bot "Get your own image badge on microbadger.com")
 
 Bot telegram to upload files to an S3 (minio)
