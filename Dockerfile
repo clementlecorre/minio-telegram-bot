@@ -3,6 +3,7 @@ FROM golang:alpine as builder
 ARG VCS_REF="N/A"
 COPY . /go/src/github.com/clementlecorre/minio-telegram-bot
 WORKDIR /go/src/github.com/clementlecorre/minio-telegram-bot
+
 RUN apk add --no-cache git gcc libc-dev ca-certificates
 
 RUN GO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -tags netgo -installsuffix netgo -ldflags '-w' -ldflags "-X main.version=${VCS_REF}" -o minio-telegram-bot .
